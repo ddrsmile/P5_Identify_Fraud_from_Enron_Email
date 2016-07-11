@@ -14,17 +14,18 @@ def add_features(data_dict):
 
 def add_financial_ratois(data_dict):
     financial_features = ['salary',
-     'deferral_payments',
-     'bonus',
-     'expenses',
-     'loan_advances',
-     'other',
-     'director_fees',
-     'deferred_income',
-     'long_term_incentive',
-     'exercised_stock_options',
-     'restricted_stock',
-     'restricted_stock_deferred']
+                          'deferral_payments',
+                          'bonus',
+                          'expenses',
+                          'loan_advances',
+                          'other',
+                          'director_fees',
+                          'deferred_income',
+                          'long_term_incentive',
+                          'exercised_stock_options',
+                          'restricted_stock',
+                          'restricted_stock_deferred']
+
     for person in data_dict:
         try:
             data_dict[person]['total_financial'] = data_dict[person]['total_payments'] + data_dict[person]['total_stock_value']

@@ -7,8 +7,10 @@ Api for clean the dataset to be used in creating fraud person-of-interest (POI) 
 """
 
 def fill_zeros(data_dict):
+
     target = ['NaN', 'NaNNaN']
     for person in data_dict:
+        # email_address is totally not used in this project.
         data_dict[person].pop('email_address')
         for key, val in data_dict[person].items():
             if val in target:
@@ -18,6 +20,7 @@ def fill_zeros(data_dict):
 
 
 def fix_records(data_dict):
+
     data_dict['BELFER ROBERT'] = {'bonus': 'NaN',
      'deferral_payments': 'NaN',
      'deferred_income': -102500,
@@ -39,6 +42,7 @@ def fix_records(data_dict):
      'to_messages': 'NaN',
      'total_payments': 3285,
      'total_stock_value': 'NaN'}
+
     data_dict['BHATNAGAR SANJAY'] = {'bonus': 'NaN',
      'deferral_payments': 'NaN',
      'deferred_income': 'NaN',
@@ -64,15 +68,19 @@ def fix_records(data_dict):
 
 
 def features_split_pandas(df):
+
     features = df.drop('poi', axis=1).astype(float)
     labels = df['poi']
     labels = labels[features.abs().sum(axis=1) != 0]
     features = features[features.abs().sum(axis=1) != 0]
+
     return (features, labels)
 
 
 def combine_to_dict(features = None, labels = None):
+
     features.insert(0, 'poi', labels)
     data_dict = features.T.to_dict()
     del features
+
     return data_dict

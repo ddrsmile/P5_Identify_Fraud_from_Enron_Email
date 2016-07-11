@@ -27,7 +27,7 @@ def validate(clf, features, labels, n_iters = 1000, test_size = 0.1):
         precision.append(precision_score(labels_test, predictions))
         recall.append(recall_score(labels_test, predictions))
         if i % round(n_iters / 10) == 0:
-            sys.stdout.write('{0}%--> '.format(int(i) / n_iters * 100))
+            sys.stdout.write('{0}%--> '.format(float(i) / n_iters * 100))
             sys.stdout.flush()
 
     print 'Done!'
