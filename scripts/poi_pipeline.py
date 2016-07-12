@@ -28,12 +28,12 @@ def get_LogReg_pipeline():
 
 def get_LogReg_params():
 
-    params = {'reducer__n_components': [0.2, 0.5, 0.7],
-              'reducer__whiten': [False],
-              'selection__k': [13, 15, 17, 22],
+    params = {'reducer__n_components': [0.5],
+              'reducer__whiten': [True, False],
+              'selection__k': [15, 17, 22],
               'classifier__class_weight': ['auto'],
               'classifier__tol': [1e-32],
-              'classifier__C': [0.001, 0.1, 1, 1.5, 2.0]}
+              'classifier__C': [0.1, 1, 1.5, 2.0]}
     return params
 
 
