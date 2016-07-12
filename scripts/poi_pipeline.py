@@ -49,10 +49,10 @@ def get_SVC_pipeline():
 def get_SVC_params():
 
     params = {'reducer__n_components': [0.5],
-              'reducer__whiten': [True, False],
-              'selection__k': [15, 17, 20],
-              'classifier__C': [0.01, 0.1, 1.0, 1.5, 2.0],
-              'classifier__gamma': [0.1, 0.0, 1.0],
+              'reducer__whiten': [False],
+              'selection__k': [15],
+              'classifier__C': [0.01],
+              'classifier__gamma': [0.0],
               'classifier__kernel': ['rbf'],
               'classifier__tol': [1e-8],
               'classifier__class_weight': ['auto'],
