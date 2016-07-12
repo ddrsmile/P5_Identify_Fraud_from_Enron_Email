@@ -12,8 +12,7 @@ from sklearn.decomposition import PCA
 from sklearn.feature_selection import f_classif
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
+from sklearn.svm import SVC, LinearSVC
 from sklearn.cluster import KMeans
 
 
@@ -29,11 +28,31 @@ def get_LogReg_pipeline():
 def get_LogReg_params():
 
     params = {'reducer__n_components': [0.5],
-              'reducer__whiten': [True, False],
-              'selection__k': [15, 17, 22],
+              'reducer__whiten': [True],
+              'selection__k': [17],
               'classifier__class_weight': ['auto'],
               'classifier__tol': [1e-32],
-              'classifier__C': [0.1, 1, 1.5, 2.0]}
+              'classifier__C': [0.1]}
+    return params
+
+def get_LSVC_pipeline():
+
+    pipeline = Pipeline(steps=[('minmaxer', MinMaxScaler()),
+                               ('selection', SelectKBest(score_func=f_classif)),
+                               ('reducer', PCA()),
+                               ('classifier', LinearSVC())])
+    return pipeline
+
+
+def get_LSVC_params():
+
+    params = {'reducer__n_components': [0.5],
+              'reducer__whiten': [False, True],
+              'selection__k': [13, 15, 17, 20],
+              'classifier__C': [0.01, 0.1, 1, 10],
+              'classifier__tol': [1e-32],
+              'classifier__class_weight': ['auto'],
+              'classifier__random_state': [42]}
     return params
 
 

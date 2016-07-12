@@ -57,6 +57,7 @@ data_dict.pop('LOCKHART EUGENE E')
 
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
+data_dict = fix_records(data_dict)
 data_dict, new_features = add_features(data_dict)
 features_list += new_features
 data_dict = fill_zeros(data_dict)
@@ -82,14 +83,17 @@ if __name__ == "__main__":
     # pipeline = get_LogReg_pipeline()
     # params = get_LogReg_params()
 
-    pipeline = get_SVC_pipeline()
-    params = get_SVC_params()
+    # pipeline = get_SVC_pipeline()
+    # params = get_SVC_params()
+
+    pipeline = get_LSVC_pipeline()
+    params = get_LSVC_params()
 
     # pipeline = get_KMeans_pipeline()
     # params = get_KMeans_params()
 
     # scoring_metric: average_precision, roc_auc, f1, recall, precision
-    scoring_metric = 'precision'
+    scoring_metric = 'recall'
     grid_searcher = GridSearchCV(pipeline, param_grid=params, cv=sk_fold,
                                  n_jobs=-1, scoring=scoring_metric, verbose=0)
 
