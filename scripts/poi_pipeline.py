@@ -88,12 +88,12 @@ def get_KMeans_pipeline():
 
 
 def get_KMeans_params():
-    params = {'reducer__n_components': [0.5],
-     'reducer__whiten': [False],
-     'selection__k': [15],
-     'classifier__n_clusters': [2],
-     'classifier__n_init': [100],
-     'classifier__init': ['k-means++'],
-     'classifier__tol': [1e-16],
-     'classifier__random_state': [42]}
+    params = {'reducer__n_components': [4],
+              'reducer__whiten': [False],
+              'selection__k': [10],
+              'classifier__n_clusters': [2],
+              'classifier__n_init': [100],
+              'classifier__init': ['k-means++'],
+              'classifier__tol': [1e-8],
+              'classifier__random_state': [42]}
     return params

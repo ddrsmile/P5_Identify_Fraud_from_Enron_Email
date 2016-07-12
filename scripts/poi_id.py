@@ -67,6 +67,7 @@ my_dataset = data_dict
 data = featureFormat(my_dataset, features_list)
 labels, features = targetFeatureSplit(data)
 
+
 if __name__ == "__main__":
 
     ### Task 4: Try a varity of classifiers
@@ -88,8 +89,8 @@ if __name__ == "__main__":
     # pipeline = get_LSVC_pipeline()
     # params = get_LSVC_params()
 
-    # pipeline = get_KMeans_pipeline()
-    # params = get_KMeans_params()
+    pipeline = get_KMeans_pipeline()
+    params = get_KMeans_params()
 
     # scoring_metric: average_precision, roc_auc, f1, recall, precision
     scoring_metric = 'precision'
