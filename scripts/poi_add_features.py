@@ -7,8 +7,10 @@ Api for adding ratios as the features to be used in creating fraud person-of-int
 """
 
 def add_features(data_dict):
+
     data_dict = add_financial_ratois(data_dict)
     data_dict = add_email_ratios(data_dict)
+
     return data_dict
 
 

@@ -6,7 +6,6 @@ sys.path.append("../tools/")
 
 from tools.feature_format import featureFormat, targetFeatureSplit
 from sklearn.grid_search import GridSearchCV
-from sklearn.cross_validation import StratifiedShuffleSplit
 from poi_validate import *
 from poi_data import *
 from poi_add_features import *
@@ -49,13 +48,12 @@ if __name__ == "__main__":
     ### you'll need to use Pipelines. For more info:
     ### http://scikit-learn.org/stable/modules/pipeline.html
 
-    # Provided to give you a starting point. Try a variety of classifiers.
     df = pd.DataFrame.from_dict(data_dict, orient='index')
     features, labels = features_split_pandas(df)
 
-
     sk_fold = StratifiedShuffleSplit(labels, n_iter=1000, test_size=0.1)
 
+    # Provided to give you a starting point. Try a variety of classifiers.
     #pipeline = get_LogReg_pipeline()
     #params = get_LogReg_params()
 

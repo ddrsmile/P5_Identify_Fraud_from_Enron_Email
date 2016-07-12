@@ -9,7 +9,9 @@ from sklearn.cross_validation import StratifiedShuffleSplit
 from sklearn.metrics import f1_score, precision_score, recall_score
 import sys
 
+
 def validate(clf, features, labels, n_iters = 1000, test_size = 0.1):
+
     sk_fold = StratifiedShuffleSplit(labels, n_iter=n_iters, test_size=test_size)
     f1 = []
     recall = []

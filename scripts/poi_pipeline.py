@@ -16,42 +16,47 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.cluster import KMeans
 
+
 def get_LogReg_pipeline():
+
     pipeline = Pipeline(steps=[('minmaxer', MinMaxScaler()),
-     ('selection', SelectKBest(score_func=f_classif)),
-     ('reducer', PCA()),
-     ('classifier', LogisticRegression())])
+                               ('selection', SelectKBest(score_func=f_classif)),
+                               ('reducer', PCA()),
+                               ('classifier', LogisticRegression())])
     return pipeline
 
 
 def get_LogReg_params():
+
     params = {'reducer__n_components': [0.5],
-     'reducer__whiten': [False],
-     'selection__k': [17],
-     'classifier__class_weight': ['auto'],
-     'classifier__tol': [1e-32],
-     'classifier__C': [2.0]}
+              'reducer__whiten': [False],
+              'selection__k': [17],
+              'classifier__class_weight': ['auto'],
+              'classifier__tol': [1e-32],
+              'classifier__C': [2.0]}
     return params
 
 
 def get_SVC_pipeline():
+
     pipeline = Pipeline(steps=[('minmaxer', MinMaxScaler()),
-     ('selection', SelectKBest(score_func=f_classif)),
-     ('reducer', PCA()),
-     ('classifier', SVC())])
+                               ('selection', SelectKBest(score_func=f_classif)),
+                               ('reducer', PCA()),
+                               ('classifier', SVC())])
     return pipeline
 
 
 def get_SVC_params():
+
     params = {'reducer__n_components': [0.5],
-     'reducer__whiten': [True],
-     'selection__k': [17],
-     'classifier__C': [1],
-     'classifier__gamma': [0.0],
-     'classifier__kernel': ['rbf'],
-     'classifier__tol': [1e-10],
-     'classifier__class_weight': ['auto'],
-     'classifier__random_state': [42]}
+              'reducer__whiten': [True],
+              'selection__k': [15],
+              'classifier__C': [1.0],
+              'classifier__gamma': [1.5],
+              'classifier__kernel': ['rbf'],
+              'classifier__tol': [1e-8],
+              'classifier__class_weight': ['auto'],
+              'classifier__random_state': [42]}
     return params
 
 
