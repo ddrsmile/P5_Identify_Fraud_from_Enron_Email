@@ -6,11 +6,10 @@ sys.path.append("../tools/")
 
 from tools.feature_format import featureFormat, targetFeatureSplit
 from sklearn.grid_search import GridSearchCV
+from poi_pipeline import *
 from poi_validate import *
 from poi_data import *
 from poi_add_features import *
-from poi_pipeline import *
-import pandas as pd
 from tester import dump_classifier_and_data
 
 ### Task 1: Select what features you'll use.
@@ -65,7 +64,7 @@ data_dict = fill_zeros(data_dict)
 my_dataset = data_dict
 
 ### Extract features and labels from dataset for local testing
-data = featureFormat(my_dataset, features_list, sort_keys=True)
+data = featureFormat(my_dataset, features_list)
 labels, features = targetFeatureSplit(data)
 
 if __name__ == "__main__":
@@ -80,20 +79,20 @@ if __name__ == "__main__":
 
     # Provided to give you a starting point. Try a variety of classifiers.
 
-    # pipeline = get_LogReg_pipeline()
-    # params = get_LogReg_params()
+    pipeline = get_LogReg_pipeline()
+    params = get_LogReg_params()
 
     # pipeline = get_SVC_pipeline()
     # params = get_SVC_params()
 
-    pipeline = get_LSVC_pipeline()
-    params = get_LSVC_params()
+    # pipeline = get_LSVC_pipeline()
+    # params = get_LSVC_params()
 
     # pipeline = get_KMeans_pipeline()
     # params = get_KMeans_params()
 
     # scoring_metric: average_precision, roc_auc, f1, recall, precision
-    scoring_metric = 'precision'
+    scoring_metric = 'recall'
     grid_searcher = GridSearchCV(pipeline, param_grid=params, cv=sk_fold,
                                  n_jobs=-1, scoring=scoring_metric, verbose=0)
 
@@ -113,6 +112,10 @@ if __name__ == "__main__":
     print "Params: ", grid_searcher.best_params_
     ###################
 
+    # check KBest feature
+    show_KBest(data_dict, features_list, k=len(top_features))
+
+    # validate model
     clf = grid_searcher.best_estimator_
     validate(clf, data_dict)
     ### Task 5: Tune your classifier to achieve better than .3 precision and recall

@@ -3,8 +3,11 @@
 created_at: 2016-07-10
 
 Api for adding ratios as the features to be used in creating fraud person-of-interest (POI) prediction model.
+Api to get the KBest result used to compare it with the result of GridSearchCV
 
 """
+from tools.feature_format import *
+from sklearn.feature_selection import SelectKBest, f_classif
 
 
 def add_features(data_dict):
@@ -51,21 +54,39 @@ def add_financial_ratios(data_dict):
     new_financial_features = ['{}_ratio'.format(feature) for feature in financial_features]
 
     for person in data_dict:
+
+        if data_dict[person]['total_payments'] == 'NaN':
+            data_dict[person]['total_payments'] = 0
+
+        if data_dict[person]['total_stock_value'] == 'NaN':
+            data_dict[person]['total_stock_value'] = 0
+
+        data_dict[person]['total_financial'] = data_dict[person]['total_payments'] + \
+                                               data_dict[person]['total_stock_value']
+
         for key, val in data_dict[person].items():
             if key in financial_features:
                 new_feature = '{}_ratio'.format(key)
-                try:
-                    data_dict[person]['total_financial'] = data_dict[person]['total_payments'] + \
-                                                           data_dict[person]['total_stock_value']
 
-                    if data_dict[person]['total_financial'] == 0:
-                        data_dict[person][new_feature] = 0
-                    else:
-                        data_dict[person][new_feature] = val / data_dict[person]['total_financial']
-
-                except:
-
-                    data_dict[person]['total_financial'] = 'NaN'
-                    data_dict[person][new_feature] = 'NaN'
+                if val == 'NaN' or data_dict[person]['total_financial'] == 0:
+                    data_dict[person][new_feature] = 0.0
+                else:
+                    data_dict[person][new_feature] = 1.0 * val / data_dict[person]['total_financial']
 
     return data_dict, new_financial_features
+
+
+def show_KBest(data_dict, features_list, k):
+
+    data = featureFormat(data_dict, features_list)
+    labels, features = targetFeatureSplit(data)
+
+    k_best = SelectKBest(score_func=f_classif, k=k)
+    k_best.fit_transform(features, labels)
+    scores = k_best.scores_
+    unsorted_pairs = zip(features_list[1:], scores)
+    sorted_pairs = list(reversed(sorted(unsorted_pairs, key=lambda x: x[1])))
+
+    print "best features\tscore\n"
+    for key, val in sorted_pairs:
+        print "{0}\t{1}".format(key, val)

@@ -28,11 +28,11 @@ def get_LogReg_pipeline():
 def get_LogReg_params():
 
     params = {'reducer__n_components': [0.5],
-              'reducer__whiten': [True],
-              'selection__k': [17],
+              'reducer__whiten': [True, False],
+              'selection__k': [13, 15, 17, 20],
               'classifier__class_weight': ['auto'],
               'classifier__tol': [1e-32],
-              'classifier__C': [0.1]}
+              'classifier__C': [0.01, 0.1, 1, 10]}
     return params
 
 def get_LSVC_pipeline():
