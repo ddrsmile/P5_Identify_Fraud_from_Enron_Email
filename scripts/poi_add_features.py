@@ -89,4 +89,7 @@ def show_KBest(data_dict, features_list, k):
 
     print "best features\tscore\n"
     for key, val in sorted_pairs:
+        if k == 0:
+            break;
+        k -= 1
         print "{0}\t{1}".format(key, val)

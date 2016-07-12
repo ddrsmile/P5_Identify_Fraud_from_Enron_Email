@@ -92,20 +92,23 @@ if __name__ == "__main__":
     # params = get_KMeans_params()
 
     # scoring_metric: average_precision, roc_auc, f1, recall, precision
-    scoring_metric = 'recall'
+    scoring_metric = 'precision'
     grid_searcher = GridSearchCV(pipeline, param_grid=params, cv=sk_fold,
                                  n_jobs=-1, scoring=scoring_metric, verbose=0)
 
     grid_searcher.fit(features, labels)
     mask = grid_searcher.best_estimator_.named_steps['selection'].get_support()
-    top_features = [x for (x, boolean) in zip(features_list, mask) if boolean]
+    k_score = grid_searcher.best_estimator_.named_steps['selection'].scores_
+    top_features = [x for (x, boolean) in zip(features_list[1:], mask) if boolean]
+    top_score = [x for (x, boolean) in zip(k_score, mask) if boolean]
+    sorted_top_features = list(reversed(sorted(zip(top_features, top_score), key=lambda x: x[1])))
     n_pca_components = grid_searcher.best_estimator_.named_steps['reducer'].n_components_
 
     print "Cross-validated {0} score: {1}".format(scoring_metric, grid_searcher.best_score_)
     print "{0} features selected".format(len(top_features))
-    for feature in top_features[0:-1]:
+    for feature in sorted_top_features[0:-1]:
         print feature, ", ",
-    print top_features[-1]
+    print sorted_top_features[-1]
     print "Reduced to {0} PCA components".format(n_pca_components)
     ###################
     # Print the parameters used in the model selected from grid search
@@ -113,7 +116,7 @@ if __name__ == "__main__":
     ###################
 
     # check KBest feature
-    show_KBest(data_dict, features_list, k=len(top_features))
+    # show_KBest(data_dict, features_list, k=len(top_features))
 
     # validate model
     clf = grid_searcher.best_estimator_
