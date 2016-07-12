@@ -71,13 +71,13 @@ def features_split_pandas(df):
 
     features = df.drop('poi', axis=1).astype(float)
     labels = df['poi']
-    labels = labels[features.abs().sum(axis=1) != 0]
-    features = features[features.abs().sum(axis=1) != 0]
+    # labels = labels[features.abs().sum(axis=1) != 0]
+    # features = features[features.abs().sum(axis=1) != 0]
 
     return (features, labels)
 
 
-def combine_to_dict(features = None, labels = None):
+def combine_to_dict(features=None, labels=None):
 
     features.insert(0, 'poi', labels)
     data_dict = features.T.to_dict()

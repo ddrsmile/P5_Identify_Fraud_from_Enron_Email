@@ -57,7 +57,8 @@ data_dict.pop('LOCKHART EUGENE E')
 
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
-data_dict = add_features(data_dict)
+data_dict, new_features = add_features(data_dict)
+features_list += new_features
 data_dict = fill_zeros(data_dict)
 
 my_dataset = data_dict
@@ -78,28 +79,30 @@ if __name__ == "__main__":
 
     # Provided to give you a starting point. Try a variety of classifiers.
 
-    pipeline = get_LogReg_pipeline()
-    params = get_LogReg_params()
+    # pipeline = get_LogReg_pipeline()
+    # params = get_LogReg_params()
 
-    # pipeline = get_SVC_pipeline()
-    # params = get_SVC_params()
+    pipeline = get_SVC_pipeline()
+    params = get_SVC_params()
 
     # pipeline = get_KMeans_pipeline()
     # params = get_KMeans_params()
 
     # scoring_metric: average_precision, roc_auc, f1, recall, precision
-    scoring_metric = 'precision'
+    scoring_metric = 'recall'
     grid_searcher = GridSearchCV(pipeline, param_grid=params, cv=sk_fold,
                                  n_jobs=-1, scoring=scoring_metric, verbose=0)
 
-
-    grid_searcher.fit(features, y=labels)
+    grid_searcher.fit(features, labels)
     mask = grid_searcher.best_estimator_.named_steps['selection'].get_support()
-    top_features = [x for (x, boolean) in zip(features, mask) if boolean]
+    top_features = [x for (x, boolean) in zip(features_list, mask) if boolean]
     n_pca_components = grid_searcher.best_estimator_.named_steps['reducer'].n_components_
 
     print "Cross-validated {0} score: {1}".format(scoring_metric, grid_searcher.best_score_)
     print "{0} features selected".format(len(top_features))
+    for feature in top_features[0:-1]:
+        print feature, ", ",
+    print top_features[-1]
     print "Reduced to {0} PCA components".format(n_pca_components)
     ###################
     # Print the parameters used in the model selected from grid search
