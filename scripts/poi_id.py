@@ -79,11 +79,11 @@ if __name__ == "__main__":
 
     # Provided to give you a starting point. Try a variety of classifiers.
 
-    pipeline = get_LogReg_pipeline()
-    params = get_LogReg_params()
+    # pipeline = get_LogReg_pipeline()
+    # params = get_LogReg_params()
 
-    # pipeline = get_SVC_pipeline()
-    # params = get_SVC_params()
+    pipeline = get_SVC_pipeline()
+    params = get_SVC_params()
 
     # pipeline = get_LSVC_pipeline()
     # params = get_LSVC_params()
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     # params = get_KMeans_params()
 
     # scoring_metric: average_precision, roc_auc, f1, recall, precision
-    scoring_metric = 'precision'
+    scoring_metric = 'f1'
     grid_searcher = GridSearchCV(pipeline, param_grid=params, cv=sk_fold,
                                  n_jobs=-1, scoring=scoring_metric, verbose=0)
 
