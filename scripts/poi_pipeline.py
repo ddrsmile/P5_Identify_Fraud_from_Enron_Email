@@ -47,9 +47,9 @@ def get_LSVC_pipeline():
 def get_LSVC_params():
 
     params = {'reducer__n_components': [0.5],
-              'reducer__whiten': [False, True],
-              'selection__k': [13, 15, 17, 20],
-              'classifier__C': [0.01, 0.1, 1, 10],
+              'reducer__whiten': [True],
+              'selection__k': [17],
+              'classifier__C': [0.01],
               'classifier__tol': [1e-32],
               'classifier__class_weight': ['auto'],
               'classifier__random_state': [42]}
