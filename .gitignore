@@ -1,3 +1,4 @@
+.DS_Store
 .env
 .idea
 emails_by_address
