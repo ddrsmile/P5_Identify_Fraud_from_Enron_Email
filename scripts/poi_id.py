@@ -16,7 +16,33 @@ from tester import dump_classifier_and_data
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
 ### The first feature must be "poi".
-features_list = ['poi','salary'] # You will need to use more features
+
+labels = ['poi']
+email_features_list = [
+    'from_messages',
+    'from_poi_to_this_person',
+    'from_this_person_to_poi',
+    'shared_receipt_with_poi',
+    'to_messages',
+    ]
+financial_features_list = [
+    'bonus',
+    'deferral_payments',
+    'deferred_income',
+    'director_fees',
+    'exercised_stock_options',
+    'expenses',
+    'loan_advances',
+    'long_term_incentive',
+    'other',
+    'restricted_stock',
+    'restricted_stock_deferred',
+    'salary',
+    'total_payments',
+    'total_stock_value',
+]
+
+features_list = labels + email_features_list + financial_features_list
 
 ### Load the dictionary containing the dataset
 with open("final_project_dataset.pkl", "r") as data_file:
@@ -48,17 +74,18 @@ if __name__ == "__main__":
     ### you'll need to use Pipelines. For more info:
     ### http://scikit-learn.org/stable/modules/pipeline.html
 
-    df = pd.DataFrame.from_dict(data_dict, orient='index')
-    features, labels = features_split_pandas(df)
-
     sk_fold = StratifiedShuffleSplit(labels, n_iter=1000, test_size=0.1)
 
     # Provided to give you a starting point. Try a variety of classifiers.
-    #pipeline = get_LogReg_pipeline()
-    #params = get_LogReg_params()
 
-    pipeline = get_SVC_pipeline()
-    params = get_SVC_params()
+    pipeline = get_LogReg_pipeline()
+    params = get_LogReg_params()
+
+    # pipeline = get_SVC_pipeline()
+    # params = get_SVC_params()
+
+    # pipeline = get_KMeans_pipeline()
+    # params = get_KMeans_params()
 
     # scoring_metric: average_precision, roc_auc, f1, recall, precision
     scoring_metric = 'precision'
@@ -80,7 +107,7 @@ if __name__ == "__main__":
     ###################
 
     clf = grid_searcher.best_estimator_
-    validate(clf, features, labels)
+    validate(clf, data_dict)
     ### Task 5: Tune your classifier to achieve better than .3 precision and recall
     ### using our testing script. Check the tester.py script in the final project
     ### folder for details on the evaluation method, especially the test_classifier

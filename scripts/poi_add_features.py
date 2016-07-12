@@ -6,6 +6,7 @@ Api for adding ratios as the features to be used in creating fraud person-of-int
 
 """
 
+
 def add_features(data_dict):
 
     data_dict = add_financial_ratois(data_dict)
@@ -48,9 +49,14 @@ def add_email_ratios(data_dict):
     for person in data_dict:
         try:
             total_messages = data_dict[person]['from_messages'] + data_dict[person]['to_messages']
-            poi_related_messages = data_dict[person]['from_poi_to_this_person'] + data_dict[person]['from_this_person_to_poi'] + data_dict[person]['shared_receipt_with_poi']
+
+            poi_related_messages = data_dict[person]['from_poi_to_this_person'] + \
+                                   data_dict[person]['from_this_person_to_poi'] + \
+                                   data_dict[person]['shared_receipt_with_poi']
+
             poi_ratio = 1.0 * poi_related_messages / total_messages
             data_dict[person]['poi_ratio_messages'] = poi_ratio
+
         except:
             data_dict[person]['poi_ratio_messages'] = 'NaN'
 
