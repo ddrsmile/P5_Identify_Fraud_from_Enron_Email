@@ -11,10 +11,29 @@ from sklearn.feature_selection import SelectKBest
 from sklearn.decomposition import PCA
 from sklearn.feature_selection import f_classif
 from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.svm import SVC, LinearSVC
 from sklearn.cluster import KMeans
 
+
+def get_LinReg_pipeline():
+
+    pipeline = Pipeline(steps=[('minmaxer', MinMaxScaler()),
+                               ('selection', SelectKBest(score_func=f_classif)),
+                               ('reducer', PCA()),
+                               ('classifier', LinearRegression())])
+    return pipeline
+
+
+def get_LinReg_params():
+
+    params = {'reducer__n_components': [0.5],
+              'reducer__whiten': [True],
+              'selection__k': [17],
+              'classifier__C': [0.5],
+              'classifier__class_weight': ['auto'],
+              'classifier__tol': [1e-64]}
+    return params
 
 def get_LogReg_pipeline():
 

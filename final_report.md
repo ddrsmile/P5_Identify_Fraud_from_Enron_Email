@@ -102,8 +102,10 @@ Features scaling was carried out since PCA and various models such as Logistic R
 >What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?
 
 <p>
-<strong>Support Vector Classifier (SVC)</strong> is the algorithm I ended up using because the results produced by SVC was the best. I also tried the algorithms such as Logistic Regression Classifier, Linear Support Vector Classifier and K-Means Classifier and several other classifiers. 
+<strong>Support Vector Classifier (SVC)</strong> is the algorithm I ended up using because the results produced by SVC was the best with the features I added. I also tried the algorithms such as Linear Regression Classifier, Logistic Regression Classifier and Linear Support Vector Classifier. 
 </p>
+
+abc
 
 >What does it mean to tune the parameters of an algorithm, and what can happen if you don’t do this well?  How did you tune the parameters of your particular algorithm? (Some algorithms do not have parameters that you need to tune -- if this is the case for the one you picked, identify and briefly explain how you would have done it for the model that was not your final choice or a different model that does utilize parameter tuning, e.g. a decision tree classifier). 
 
