@@ -50,17 +50,24 @@ with open("final_project_dataset.pkl", "r") as data_file:
 ### Task 2: Remove outliers
 data_dict.pop('TOTAL')
 data_dict.pop('THE TRAVEL AGENCY IN THE PARK')
+
 # This person is removed because there is no any data of this person.
 data_dict.pop('LOCKHART EUGENE E')
 
 
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
+# fix the not consistent data
 data_dict = fix_records(data_dict)
+
+# add new feature dataset and get the list of added feature
 data_dict, new_features = add_features(data_dict)
 features_list += new_features
+
+# cleaning data, replace 'NaN' with 0
 data_dict = fill_zeros(data_dict)
 
+# assign data_dict to my_dataset for dumping out
 my_dataset = data_dict
 
 ### Extract features and labels from dataset for local testing
@@ -76,10 +83,10 @@ if __name__ == "__main__":
     ### you'll need to use Pipelines. For more info:
     ### http://scikit-learn.org/stable/modules/pipeline.html
 
+    # generate training and testing dataset
     sk_fold = StratifiedShuffleSplit(labels, n_iter=1000, test_size=0.1)
 
     # Provided to give you a starting point. Try a variety of classifiers.
-
     # pipeline = get_LogReg_pipeline()
     # params = get_LogReg_params()
 
@@ -92,36 +99,51 @@ if __name__ == "__main__":
     pipeline = get_KMeans_pipeline()
     params = get_KMeans_params()
 
-    # scoring_metric: average_precision, roc_auc, f1, recall, precision
+    # determine the score to tune the parameters
     scoring_metric = 'precision'
+
+    # run grid search to tune the parameters
     grid_searcher = GridSearchCV(pipeline, param_grid=params, cv=sk_fold,
                                  n_jobs=-1, scoring=scoring_metric, verbose=0)
 
     grid_searcher.fit(features, labels)
+
+    # extract the parameters for the analysis
+    # k-best features
+    ## get list of selected features
     mask = grid_searcher.best_estimator_.named_steps['selection'].get_support()
+
+    ## get scores of each features
     k_score = grid_searcher.best_estimator_.named_steps['selection'].scores_
+
+    ## sort the list of features with scores in decendent order
     top_features = [x for (x, boolean) in zip(features_list[1:], mask) if boolean]
     top_score = [x for (x, boolean) in zip(k_score, mask) if boolean]
     sorted_top_features = list(reversed(sorted(zip(top_features, top_score), key=lambda x: x[1])))
+
+    # the number of pca features
     n_pca_components = grid_searcher.best_estimator_.named_steps['reducer'].n_components_
 
-    print "Cross-validated {0} score: {1}".format(scoring_metric, grid_searcher.best_score_)
+    # the dict of best parameters
+    best_params = grid_searcher.best_params_
+
+    # the best score of grid search
+    best_score = grid_searcher.best_score_
+
+    # print the results of parameters tuning
+    print "Cross-validated {0} score: {1}".format(scoring_metric, best_score)
+
+    # print number of k-best features and the score of each features
     print "{0} features selected".format(len(top_features))
-    for feature in sorted_top_features[0:-1]:
-        print feature, ", ",
-    print sorted_top_features[-1]
+    for feature in sorted_top_features:
+        print feature[0], ": ", feature[1]
+
+    # print number of PCA components
     print "Reduced to {0} PCA components".format(n_pca_components)
-    ###################
-    # Print the parameters used in the model selected from grid search
-    print "Params: ", grid_searcher.best_params_
-    ###################
 
-    # check KBest feature
-    # show_KBest(data_dict, features_list, k=len(top_features))
+    # print the parameters used in the model selected from grid search
+    print "Params: ", best_params
 
-    # validate model
-    clf = grid_searcher.best_estimator_
-    validate(clf, data_dict)
     ### Task 5: Tune your classifier to achieve better than .3 precision and recall
     ### using our testing script. Check the tester.py script in the final project
     ### folder for details on the evaluation method, especially the test_classifier
@@ -129,8 +151,8 @@ if __name__ == "__main__":
     ### stratified shuffle split cross validation. For more info:
     ### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 
-    # Example starting point. Try investigating other evaluation techniques!
-
+    clf = grid_searcher.best_estimator_
+    validate(clf, data_dict)
 
     ### Task 6: Dump your classifier, dataset, and features_list so anyone can
     ### check your results. You do not need to change anything below, but make sure

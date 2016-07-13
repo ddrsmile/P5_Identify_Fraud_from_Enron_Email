@@ -74,24 +74,3 @@ def add_financial_ratios(data_dict):
                     data_dict[person][new_feature] = 1.0 * val / data_dict[person]['total_financial']
 
     return data_dict, new_financial_features
-
-
-def get_KBest_dataset(data_dict, features_list, k):
-
-    data = featureFormat(data_dict, features_list)
-    labels, features = targetFeatureSplit(data)
-
-    k_best = SelectKBest(score_func=f_classif, k=k)
-    k_best.fit(features, labels)
-    scores = k_best.scores_
-    unsorted_pairs = zip(features_list[1:], scores)
-    sorted_pairs = list(reversed(sorted(unsorted_pairs, key=lambda x: x[1])))
-    k_best_features = dict(sorted_pairs[:k])
-
-    print k_best_features.keys()
-
-    features_list = ['poi'] + k_best_features.keys()
-    data = featureFormat(data_dict, features_list)
-    labels, features = targetFeatureSplit(data)
-
-    return labels, features
