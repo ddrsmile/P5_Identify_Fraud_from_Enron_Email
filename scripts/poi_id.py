@@ -87,9 +87,6 @@ if __name__ == "__main__":
     sk_fold = StratifiedShuffleSplit(labels, n_iter=1000, test_size=0.1)
 
     # Provided to give you a starting point. Try a variety of classifiers.
-    pipeline = get_LinReg_pipeline()
-    params = get_LinReg_params()
-
     # pipeline = get_LogReg_pipeline()
     # params = get_LogReg_params()
 
@@ -98,6 +95,9 @@ if __name__ == "__main__":
 
     # pipeline = get_LSVC_pipeline()
     # params = get_LSVC_params()
+
+    pipeline = get_DTree_pipeline()
+    params = get_DTree_params()
 
     # determine the score to tune the parameters
     scoring_metric = 'recall'

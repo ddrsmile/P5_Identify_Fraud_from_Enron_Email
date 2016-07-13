@@ -11,29 +11,11 @@ from sklearn.feature_selection import SelectKBest
 from sklearn.decomposition import PCA
 from sklearn.feature_selection import f_classif
 from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LogisticRegression, LinearRegression
+from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC, LinearSVC
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.cluster import KMeans
 
-
-def get_LinReg_pipeline():
-
-    pipeline = Pipeline(steps=[('minmaxer', MinMaxScaler()),
-                               ('selection', SelectKBest(score_func=f_classif)),
-                               ('reducer', PCA()),
-                               ('classifier', LinearRegression())])
-    return pipeline
-
-
-def get_LinReg_params():
-
-    params = {'reducer__n_components': [0.5],
-              'reducer__whiten': [True],
-              'selection__k': [17],
-              'classifier__C': [0.5],
-              'classifier__class_weight': ['auto'],
-              'classifier__tol': [1e-64]}
-    return params
 
 def get_LogReg_pipeline():
 
@@ -96,6 +78,26 @@ def get_SVC_params():
               'classifier__class_weight': ['auto'],
               'classifier__random_state': [42]}
     return params
+
+def get_DTree_pipeline():
+    pipeline = Pipeline(steps=[('minmaxer', MinMaxScaler()),
+     ('selection', SelectKBest(score_func=f_classif)),
+     ('reducer', PCA()),
+     ('classifier', DecisionTreeClassifier())])
+    return pipeline
+
+
+def get_DTree_params():
+    params = {'reducer__n_components': [0.5],
+              'reducer__whiten': [False, True],
+              'selection__k': [13, 15, 17],
+              'classifier__criterion': ['gini', 'entropy'],
+              'classifier__max_depth': [1, 2, 4, 8],
+              'classifier__min_samples_leaf': [1, 2, 4, 8],
+              'classifier__min_samples_split': [1, 2, 4, 8],
+              'classifier__class_weight': ['auto', 'None']}
+    return params
+
 
 
 def get_KMeans_pipeline():
