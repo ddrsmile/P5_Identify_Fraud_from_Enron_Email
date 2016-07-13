@@ -100,7 +100,7 @@ if __name__ == "__main__":
     params = get_DTree_params()
 
     # determine the score to tune the parameters
-    scoring_metric = 'recall'
+    scoring_metric = 'precision'
 
     # run grid search to tune the parameters
     grid_searcher = GridSearchCV(pipeline, param_grid=params, cv=sk_fold,

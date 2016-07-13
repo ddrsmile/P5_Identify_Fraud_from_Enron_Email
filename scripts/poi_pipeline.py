@@ -89,13 +89,14 @@ def get_DTree_pipeline():
 
 def get_DTree_params():
     params = {'reducer__n_components': [0.5],
-              'reducer__whiten': [False, True],
-              'selection__k': [13, 15, 17],
-              'classifier__criterion': ['gini', 'entropy'],
-              'classifier__max_depth': [1, 2, 4, 8],
-              'classifier__min_samples_leaf': [1, 2, 4, 8],
-              'classifier__min_samples_split': [1, 2, 4, 8],
-              'classifier__class_weight': ['auto', 'None']}
+              'reducer__whiten': [False],
+              'selection__k': [8, 9, 10],
+              'classifier__class_weight': ['balanced', None],
+              'classifier__criterion': ['entropy'],
+              'classifier__splitter': ['best'],
+              'classifier__max_depth': [2, 20, 25, 27],
+              'classifier__min_samples_leaf': [2, 20, 25, 27],
+              'classifier__min_samples_split': [1, 2, 3]}
     return params
 
 
