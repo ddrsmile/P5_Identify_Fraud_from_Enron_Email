@@ -90,13 +90,13 @@ def get_DTree_pipeline():
 def get_DTree_params():
     params = {'reducer__n_components': [0.5],
               'reducer__whiten': [False],
-              'selection__k': [8, 9, 10],
-              'classifier__class_weight': ['balanced', None],
+              'selection__k': [10],
+              'classifier__class_weight': ['balanced'],
               'classifier__criterion': ['entropy'],
               'classifier__splitter': ['best'],
-              'classifier__max_depth': [2, 20, 25, 27],
-              'classifier__min_samples_leaf': [2, 20, 25, 27],
-              'classifier__min_samples_split': [1, 2, 3]}
+              'classifier__max_depth': [2],
+              'classifier__min_samples_leaf': [20],
+              'classifier__min_samples_split': [2]}
     return params
 
 

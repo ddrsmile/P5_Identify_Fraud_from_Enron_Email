@@ -1,4 +1,5 @@
 .DS_Store
+my_*.pkl
 .env
 .idea
 emails_by_address

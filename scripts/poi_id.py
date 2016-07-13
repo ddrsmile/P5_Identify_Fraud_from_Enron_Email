@@ -4,7 +4,6 @@ import sys
 import pickle
 sys.path.append("../tools/")
 
-from tools.feature_format import featureFormat, targetFeatureSplit
 from sklearn.grid_search import GridSearchCV
 from poi_pipeline import *
 from poi_validate import *
@@ -90,17 +89,17 @@ if __name__ == "__main__":
     # pipeline = get_LogReg_pipeline()
     # params = get_LogReg_params()
 
-    # pipeline = get_SVC_pipeline()
-    # params = get_SVC_params()
-
     # pipeline = get_LSVC_pipeline()
     # params = get_LSVC_params()
 
-    pipeline = get_DTree_pipeline()
-    params = get_DTree_params()
+    pipeline = get_SVC_pipeline()
+    params = get_SVC_params()
+
+    # pipeline = get_DTree_pipeline()
+    # params = get_DTree_params()
 
     # determine the score to tune the parameters
-    scoring_metric = 'precision'
+    scoring_metric = 'recall'
 
     # run grid search to tune the parameters
     grid_searcher = GridSearchCV(pipeline, param_grid=params, cv=sk_fold,
@@ -159,4 +158,4 @@ if __name__ == "__main__":
     ### that the version of poi_id.py that you submit can be run on its own and
     ### generates the necessary .pkl files for validating your results.
 
-    #dump_classifier_and_data(clf, my_dataset, features_list)
+    dump_classifier_and_data(clf, my_dataset, features_list)
