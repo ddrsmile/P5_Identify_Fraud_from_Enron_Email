@@ -7,20 +7,18 @@ Api for validate the fraud person-of-interest (POI) prediction model with sk-lea
 """
 from sklearn.cross_validation import StratifiedShuffleSplit
 from sklearn.metrics import f1_score, precision_score, recall_score
-from poi_data import features_split_pandas
 import pandas as pd
 import sys
 
 
-def validate(clf, data_dict, n_iters=1000, test_size=0.1):
-
-    df = pd.DataFrame.from_dict(data_dict, orient='index')
-    features, labels = features_split_pandas(df)
+def validate(clf, features, labels, n_iters=1000, test_size=0.1):
 
     sk_fold = StratifiedShuffleSplit(labels, n_iter=n_iters, test_size=test_size)
+
     f1 = []
     recall = []
     precision = []
+
     for i, all_index in enumerate(sk_fold):
 
         train_index = all_index[0]

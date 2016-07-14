@@ -6,17 +6,28 @@ Api for clean the dataset to be used in creating fraud person-of-interest (POI) 
 
 """
 
-def fill_zeros(data_dict):
+import pandas as pd
+import numpy as np
 
-    target = ['NaN', 'NaNNaN']
-    for person in data_dict:
-        # email_address is totally not used in this project.
-        data_dict[person].pop('email_address')
-        for key, val in data_dict[person].items():
-            if val in target:
-                data_dict[person][key] = 0
 
-    return data_dict
+def fill_zeros(df):
+
+    df.replace(to_replace=np.nan, value=0, inplace=True)
+
+    # email_address is totally not used in this project.
+    del df['email_address']
+
+    return df
+
+    #target = ['NaN', 'NaNNaN']
+    #for person in data_dict:
+    #    # email_address is totally not used in this project.
+    #    data_dict[person].pop('email_address')
+    #    for key, val in data_dict[person].items():
+    #        if val in target:
+    #            data_dict[person][key] = 0
+
+    #return data_dict
 
 
 def fix_records(data_dict):
@@ -67,12 +78,10 @@ def fix_records(data_dict):
     return data_dict
 
 
-def features_split_pandas(df):
+def separate_features_labels(df=None):
 
     features = df.drop('poi', axis=1).astype(float)
     labels = df['poi']
-    # labels = labels[features.abs().sum(axis=1) != 0]
-    # features = features[features.abs().sum(axis=1) != 0]
 
     return (features, labels)
 
@@ -84,3 +93,12 @@ def combine_to_dict(features=None, labels=None):
     del features
 
     return data_dict
+
+
+def count_loss_record(df=None, features_list=None, poi_mode=False):
+    # poi_mode=True: count record of poi only
+    # poi_mode=True: count record of non-poi only
+
+    df.replace(to_replace='NaN', value=np.nan, inplace=True)
+
+    return df.loc[df['poi'] == poi_mode].isnull().sum()
