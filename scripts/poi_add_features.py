@@ -46,9 +46,9 @@ def add_email_ratios(df):
 
 def add_financial_ratios(df):
 
-    #df = create_payments_ratio(df)
-    #df = create_stock_value_ratio(df)
-    df = create_overall_financial_ratio(df)
+    df = create_payments_ratio(df)
+    df = create_stock_value_ratio(df)
+    df = create_overall_financial_ratio(df, saperate=True)
 
     return df
 

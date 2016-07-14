@@ -106,7 +106,7 @@ if __name__ == "__main__":
     # params = get_DTree_params()
 
     # determine the score to tune the parameters
-    scoring_metric = 'recall'
+    scoring_metric = 'precision'
 
     # run grid search to tune the parameters
     grid_searcher = GridSearchCV(pipeline, param_grid=params, cv=sk_fold,
@@ -173,4 +173,4 @@ if __name__ == "__main__":
     # test classifier with the tool provided by Udacity
     test_classifier(clf, my_dataset, features_list)
 
-    dump_classifier_and_data(clf, data_dict, features_list)
+    dump_classifier_and_data(clf, my_dataset, features_list)

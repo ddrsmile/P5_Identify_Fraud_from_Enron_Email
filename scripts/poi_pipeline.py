@@ -70,9 +70,9 @@ def get_SVC_params():
 
     params = {'reducer__n_components': [0.5],
               'reducer__whiten': [False],
-              'selection__k': [15],
-              'classifier__C': [0.01],
-              'classifier__gamma': [0.0],
+              'selection__k': [15], # 15
+              'classifier__C': [1.335], #1.335
+              'classifier__gamma': [11.55], # 11.55
               'classifier__kernel': ['rbf'],
               'classifier__tol': [1e-8],
               'classifier__class_weight': ['auto'],
