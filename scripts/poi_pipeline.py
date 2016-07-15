@@ -30,8 +30,8 @@ def get_LogReg_params():
 
     params = {'reducer__n_components': [0.5],
               'reducer__whiten': [True],
-              'selection__k': [17],
-              'classifier__C': [0.5],
+              'selection__k': [16],
+              'classifier__C': [1.3],
               'classifier__class_weight': ['auto'],
               'classifier__tol': [1e-64]}
     return params
@@ -49,8 +49,8 @@ def get_LSVC_params():
 
     params = {'reducer__n_components': [0.5],
               'reducer__whiten': [True],
-              'selection__k': [15],
-              'classifier__C': [0.15],
+              'selection__k': [15, 16, 17, 18],
+              'classifier__C': [0.15, 0.5, 1.3, 5, 6],
               'classifier__tol': [1e-32],
               'classifier__class_weight': ['auto'],
               'classifier__random_state': [42]}
