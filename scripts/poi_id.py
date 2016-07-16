@@ -9,6 +9,7 @@ from poi_pipeline import *
 from poi_validate import *
 from poi_data import *
 from poi_add_features import *
+from poi_plot import *
 from tester import dump_classifier_and_data, test_classifier
 from tools.feature_format import targetFeatureSplit, featureFormat
 
@@ -50,14 +51,19 @@ with open("final_project_dataset.pkl", "r") as data_file:
 # fix the not consistent data
 data_dict = fix_records(data_dict)
 
-# Convert dict to dataframe
+# convert dict to dataframe
 df = pd.DataFrame.from_dict(data_dict, orient='index')
 
-# collect the lost record info.
-poi_only_loss_count = count_loss_record(df, features_list, True)
-non_poi_only_loss_count = count_loss_record(df, features_list, True)
-total_loss_count = poi_only_loss_count.add(non_poi_only_loss_count)
+# print basic info of the dataset
+basic_info(df)
 
+# collect the lost record info.
+poi_loss_count = count_loss_record(df, True)
+non_poi_loss_count = count_loss_record(df, False)
+total_loss_count = poi_loss_count.add(non_poi_loss_count)
+create_plot(poi_loss_count, non_poi_loss_count, total_loss_count, True)
+
+sys.exit(0)
 ### Task 2: Remove outliers
 # remove the clear outlier
 df = df.drop(['TOTAL', 'THE TRAVEL AGENCY IN THE PARK'])

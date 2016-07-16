@@ -4,3 +4,4 @@ my_*.pkl
 .idea
 emails_by_address
 enron61702insiderpay.pdf
+*.png

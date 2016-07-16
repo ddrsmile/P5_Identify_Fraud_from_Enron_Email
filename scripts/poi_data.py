@@ -7,6 +7,13 @@ Api for cleaning the dataset to be used in creating fraud person-of-interest (PO
 
 import numpy as np
 
+def basic_info(df):
+    n_record, n_feature = df.shape
+    n_poi, _ = df[df['poi']==True].shape
+    n_non_poi = n_record - n_poi
+
+    print '{0} records in the dataset with {1} feature.'.format(n_record, n_feature)
+    print 'There are {0} records are marked as POI and {1} records are not'.format(n_poi, n_non_poi)
 
 def fill_zeros(df):
 
@@ -81,7 +88,7 @@ def separate_features_labels(df=None):
     features = df.drop('poi', axis=1).astype(float)
     labels = df['poi']
 
-    return (features, labels)
+    return features, labels
 
 
 def combine_to_dict(features=None, labels=None):
@@ -93,7 +100,7 @@ def combine_to_dict(features=None, labels=None):
     return data_dict
 
 
-def count_loss_record(df=None, features_list=None, poi_mode=False):
+def count_loss_record(df=None, poi_mode=False):
     # poi_mode=True: count record of poi only
     # poi_mode=True: count record of non-poi only
 
