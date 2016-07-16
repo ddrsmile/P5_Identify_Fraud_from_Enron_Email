@@ -4,7 +4,6 @@ created_at: 2016-07-10
 
 Api for adding ratios as the features to be used in creating fraud person-of-interest (POI) prediction model.
 Api to get the KBest result used to compare it with the result of GridSearchCV
-
 """
 
 
@@ -48,7 +47,7 @@ def add_financial_ratios(df):
 
     df = create_payments_ratio(df)
     df = create_stock_value_ratio(df)
-    df = create_overall_financial_ratio(df, saperate=False)
+    df = create_overall_financial_ratio(df, saperate=True)
 
     return df
 

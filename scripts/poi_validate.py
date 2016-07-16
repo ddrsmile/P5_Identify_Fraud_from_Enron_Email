@@ -2,9 +2,9 @@
 @author: Nan-Tsou Liu
 created_at: 2016-07-10
 
-Api for validate the fraud person-of-interest (POI) prediction model with sk-learn modules.
-
+Api for validating the fraud person-of-interest (POI) prediction model with sk-learn modules.
 """
+
 from sklearn.cross_validation import StratifiedShuffleSplit
 from sklearn.metrics import f1_score, precision_score, recall_score
 import pandas as pd

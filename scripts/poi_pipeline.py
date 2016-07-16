@@ -2,9 +2,7 @@
 @author: Nan-Tsou Liu
 created_at: 2016-07-10
 
-Api for provide the pipline and parameter for fraud person-of-interest (POI) prediction model.
-
-
+Api for providing the pipline and parameter for fraud person-of-interest (POI) prediction model.
 """
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.feature_selection import SelectKBest
@@ -49,8 +47,8 @@ def get_LSVC_params():
 
     params = {'reducer__n_components': [0.5],
               'reducer__whiten': [True],
-              'selection__k': [15, 16, 17, 18],
-              'classifier__C': [0.15, 0.5, 1.3, 5, 6],
+              'selection__k': [15],
+              'classifier__C': [0.146],
               'classifier__tol': [1e-32],
               'classifier__class_weight': ['auto'],
               'classifier__random_state': [42]}
@@ -90,12 +88,12 @@ def get_DTree_pipeline():
 def get_DTree_params():
     params = {'reducer__n_components': [0.5],
               'reducer__whiten': [False],
-              'selection__k': [10],
+              'selection__k': [11],
               'classifier__class_weight': ['balanced'],
               'classifier__criterion': ['entropy'],
               'classifier__splitter': ['best'],
               'classifier__max_depth': [2],
-              'classifier__min_samples_leaf': [20],
+              'classifier__min_samples_leaf': [18],
               'classifier__min_samples_split': [2]}
     return params
 
