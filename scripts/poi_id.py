@@ -96,8 +96,8 @@ if __name__ == "__main__":
     # pipeline = get_LogReg_pipeline()
     # params = get_LogReg_params()
 
-    pipeline = get_LSVC_pipeline()
-    params = get_LSVC_params()
+    # pipeline = get_LSVC_pipeline()
+    # params = get_LSVC_params()
 
     pipeline = get_SVC_pipeline()
     params = get_SVC_params()

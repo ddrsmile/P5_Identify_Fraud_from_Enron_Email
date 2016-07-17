@@ -2,7 +2,7 @@
 ---
 **Udacity Data Analyst Nonedegree**
 
-By Nan-Tsou Liu @ 2016-07-11
+By Nan-Tsou Liu @ 2016-07-17
 
 ## Introduction
 <p>
@@ -244,8 +244,12 @@ On the other hand, the messages of each person should be a strong feature to ide
 <td>total_payments + total_stock_value</td>
 </tr>
 <tr>
-<td><strong>{each feature}_ratio</strong></td>
-<td>{each feature} / total_financial</td>
+<td><strong>{each payment feature}_payment_ratio</strong></td>
+<td>{each payment feature} / total_payments</td>
+</tr>
+<tr>
+<td><strong>{each stock feature}_stock_ratio</strong></td>
+<td>{each stock feature} / total_stock_values</td>
 </tr>
 <tr>
 <td><strong>poi_ratio_messages</strong></td>
@@ -253,11 +257,11 @@ On the other hand, the messages of each person should be a strong feature to ide
 </tr>
 <tr>
 <td><strong>poi_related_messages</strong></td>
-<td>from_poi_to_this_person + from_this_person_to_poi + shared_receipt_with_poi (NOT USED)</td>
+<td>from_poi_to_this_person + from_this_person_to_poi + shared_receipt_with_poi (FOR CALCULATION ONLY)</td>
 </tr>
 <tr>
 <td><strong>total_messages</strong></td>
-<td>from_messages + to_messages (NOT USED)</td>
+<td>from_messages + to_messages (FOR CALCULATION ONLY)</td>
 </tr>
 </tbody>
 </table>
@@ -276,24 +280,25 @@ Features scaling was carried out since PCA and various models such as Logistic R
 <p>
 <strong>SelectKBest</strong> and <strong>Principal Components Analysis (PCA)</strong> dimension reduction were run during each of the cross-validation loops during the grid search. The K-best features were selected using <strong>Anova F-value classification</strong> scoring function. The K-best features were then used in reducing dimension with PCA. Finally,the N principal components were fed into a classification algorithm.
 </p>
+<p>The results of the feature selection would be discussed in the section <strong>Final Results of each Algorithm</strong> below. And the K-Best result would be shown in section <strong>Parameter Tuning</strong>
+</p>
 
 ---
 
 >What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?
 
 <p>
-The ended up using algorithm was determined by the results of <strong>GridSearchCV</strong> respected <strong>recall score</strong> and <strong>precision score</strong> with k-best feature selection, PCA reduction and parameters tuning. <strong>Support Vector Classifier (SVC)</strong> showed the best results, and therefore it was the ended up using algorithm in this project. Besides SVC, I also tried <strong>Logistic Regression (LogReg)</strong>, <strong>Linear Support Vector Machine (LSVC)</strong>, <strong>Decision Tree (DTree)</strong> and <strong>K-Means Classifier (KMeans)</strong>.
+The ended up using algorithm was determined by the results of <strong>GridSearchCV</strong> respected <strong>recall score</strong> and <strong>precision score</strong> with k-best feature selection, PCA reduction and parameters tuning. <strong>Support Vector Classifier (SVC)</strong> showed the best results, which are <strong>recall score 0.70900 and precision score 0.34434</strong>, and therefore it was the ended up using algorithm in this project. Besides SVC, I also tried <strong>Logistic Regression (LogReg)</strong>, <strong>Linear Support Vector Machine (LSVC)</strong>, <strong>Decision Tree (DTree)</strong> and <strong>K-Means Classifier (KMeans)</strong>.
 </p>
 <p>
-Actually, LogReg and LSVC also showed the competive results compared with that of SVC. And the results of both algorithms were similar. The recall scores are about <strong>0.72</strong> and <strong>0.68</strong> of LogReg and LSVC respectively. And the precision scores are about <strong>0.3</strong> of both algorithms. According to the obversation by manual parameter tuning, recall score and precision score were changed against with each other. And the parameter <strong>C</strong> affected the results mostly. And I found out an interesting phenomenon that the value ended with 5 like <code>[0.05, 0.5, 0.15]</code> could keep recall score at good value and promote precision score well. And, precision score kelp <strong>around 0.3</strong>.
+Actually, LogReg and LSVC also showed the competive results compared with that of SVC. And the results of both algorithms were similar. The recall scores are about <strong>0.70</strong> and <strong>0.68</strong> of LogReg and LSVC respectively. And the precision scores are about <strong>0.3</strong> of both algorithms, which were calculated by the validation program I wrote. According to the obversation by manual parameter tuning, recall score and precision score were changed against with each other. And the parameter <strong>C</strong> affected the results mostly. And I found out an interesting phenomenon that the value ended with 5 like <code>[0.05, 0.5, 0.15]</code> could keep recall score at good value and promote precision score well. And, precision score kelp <strong>around 0.3</strong>. However, the results tested by the program provided by Udacity were around <strong>0.27 to 0.28</strong>, which did not meet the requirements of the assignments.
 </p>
-
 <p>
-The results of DTree were fair although the results matched the requirements of the assignment. 
+The results of DTree were fair although the results matched the requirements of the assignment. However, the tuning parmeters are quite different from the algorithms above. I have tried to tune parameter <strong>max_depth</strong>, 
+<strong>min_samples_leaf</strong>, and <strong>min_samples_split</strong>. And the final result in this case was <strong>Precision: 0.33299</strong> and <strong>Recall: 0.64200</strong>.
 </p>
-
 <p>
-On the other hand, the precision score of KMeans kept at the value <strong>about 0.15</strong>, which is far from the requirement of the assignment. No matter how I tuned the parameters, although precision score was about <strong>0.5</strong>. In my opinion, KMeans might not suitable for this prediction after I added the new features.
+On the other hand, the precision score of KMeans (which was told by Udacity reviewer that it is intended for unsupervised learning) kept at the value <strong>about 0.15</strong>, which is far from the requirement of the assignment. No matter how I tuned the parameters, although precision score was about <strong>0.5</strong>. In my opinion, KMeans might not suitable for this prediction after I added the new features. Thus, I decided to exclude it from the discussion of this report.
 </p>
 
 ---
@@ -318,9 +323,9 @@ Tuning the parameters of an algorithm is a process to promote the performance of
 <tbody>
 <tr>
 <td><strong>C</strong></td>
-<td>0.5</td>
-<td>0.15</td>
-<td>0.01</td>
+<td>1.3</td>
+<td>0.146</td>
+<td>1.335</td>
 <td>-</td>
 </tr>
 <tr>
@@ -353,16 +358,16 @@ Tuning the parameters of an algorithm is a process to promote the performance of
 </tr>
 <tr>
 <td><strong>selection of SelectKBest</strong></td>
-<td>17</td>
+<td>16</td>
 <td>15</td>
 <td>15</td>
-<td>10</td>
+<td>11</td>
 </tr>
 <tr>
 <td><strong>gamma</strong></td>
 <td>-</td>
 <td>-</td>
-<td>0.0</td>
+<td>11.55</td>
 <td>-</td>
 </tr>
 <tr>
@@ -398,7 +403,7 @@ Tuning the parameters of an algorithm is a process to promote the performance of
 <td>-</td>
 <td>-</td>
 <td>-</td>
-<td>20</td>
+<td>18</td>
 </tr>
 <tr>
 <td><strong>min_sample_split</strong></td>
@@ -450,7 +455,10 @@ I found out an interesting results when I manually tuned parameters of SVC. As t
 ### Cross-Validation
 <p>
 Cross-Validation was applied on the validation of model. It is a process that randomly split the data into training and testing dataset. And then it trains the model with the training data and validates with the testing data.
-In this project, the whole dateset was splitted with 1000 randomized <strong>stratified cross-validation splits</strong>. And then the parameters with the best performance over 1000 splits were selected.
+In this project, the whole dateset was splitted with 1000 randomized <strong>stratified cross-validation splits</strong>. And then the parameters with the best performance over 1000 splits were selected. 
+</p>
+<p>
+According to the structure and nature of this dataset. The records we have are quite few. There are only 18 POI and 144 records. And lots of data of some features are lost. Thus, <strong>StratifiedShuffleSplit</strong>, which combines <strong>StratifiedKFold</strong> and <strong>ShuffleSplit</strong> and returns stratified <strong>randomized folds</strong>, is much more suitable for this dataset. And this is also the main reasion that I fianlly used this method to do cross-validation.
 </p>
 
 ### Parameter Tuning
@@ -465,6 +473,9 @@ One should be notified is that these features might change slightly each time si
 </p>
 
 ###K-Best Feature (Top 15)
+
+<strong style="color: red;">Added Feature</strong>
+
 <table>
 <thead>
 <tr>
@@ -486,8 +497,20 @@ One should be notified is that these features might change slightly each time si
 <td>20.7922520472</td>
 </tr>
 <tr>
+<td><strong style="color: red;">bonus_payment_ratio</strong></td>
+<td>20.7155962476</td>
+</tr>
+<tr>
 <td><strong>salary</strong></td>
 <td>18.2896840434</td>
+</tr>
+<tr>
+<td><strong style="color: red;">total_financial</strong></td>
+<td> 17.3887977785 </td>
+</tr>
+<tr>
+<td><strong style="color: red;">long_term_incentive_payment_ratio</strong></td>
+<td> 13.8508684172 </td>
 </tr>
 <tr>
 <td><strong>deferred_income</strong></td>
@@ -518,20 +541,8 @@ One should be notified is that these features might change slightly each time si
 <td>7.18405565829</td>
 </tr>
 <tr>
-<td><strong>bonus_ratio</strong></td>
-<td>6.58326879249</td>
-</tr>
-<tr>
 <td><strong>expenses</strong></td>
 <td>5.41890018941</td>
-</tr>
-<tr>
-<td><strong>from_poi_to_this_person</strong></td>
-<td>5.24344971337</td>
-</tr>
-<tr>
-<td><strong>loan_advances_ratio</strong></td>
-<td>4.56000450411</td>
 </tr>
 </tbody>
 </table>
@@ -559,6 +570,10 @@ On the other hand, the target marked positive with high precision score can be t
 </p>
 
 <p>
+General speaking, to explain the meaning of recall and precision with the term of this project. If the predicting model with <strong>recall score 0.710 and precsion score 0.344</strong> marks the target as <strong>Non-POI (negative)</strong>, then we are confident to assert this target is not POI because 71% is quite high accryacy. However, if the model marks the target as <strong>POI (positive)</strong>, we have to doubt the result and do more confirmation because 34.4% accruacy is not relaiable to identify the target is POI. Otherwise we mignt label the innocent person with quilty. So, the model with <strong>high reall score and low precision scores</strong> could be used to identify the target is <strong>Non-POI</strong>. As the result, we can decrease the number of suspects and then focus on those who have high possibilty to be the <strong>REAL POI</strong>.
+</p>
+
+<p>
 In this porject, lots of records in the dataset are unknown and we have much more negative labels than positive ones. Thus, in my opinion, it is a little bit not practical to build a model which can identify the target is POI, which means the model with high precision score. On the other hand, it should be more practical to build the model which can identify the target is not POI, which means the model with high recall score. As the result, it is not surprised that recall socres are <strong>much greater</strong> than precision scores of all the results of all the algorithms in this project.
 </p>
 
@@ -576,34 +591,34 @@ In this porject, lots of records in the dataset are unknown and we have much mor
 <tbody>
 <tr>
 <td><strong>Logistic Regression</strong></td>
-<td>0.718</td>
-<td>0.732</td>
-<td>0.295</td>
-<td>17</td>
+<td>0.7290</td>
+<td>0.71750</td>
+<td>0.28044</td>
+<td>16</td>
 <td>2</td>
 </tr>
 <tr>
 <td><strong>Linear SVC</strong></td>
-<td>0.685</td>
-<td>0.683</td>
-<td>0.292</td>
+<td>0.70050</td>
+<td>0.69800</td>
+<td>0.27665</td>
 <td>15</td>
 <td>2</td>
 </tr>
 <tr>
 <td><strong>SVC</strong></td>
-<td>0.716</td>
-<td>0.7335</td>
-<td>0.3317</td>
+<td>0.70650</td>
+<td>0.70900</td>
+<td>0.34434</td>
 <td>15</td>
 <td>2</td>
 </tr>
 <tr>
 <td><strong>Decision Tree</strong></td>
-<td>0.611</td>
-<td>0.593</td>
-<td>0.389</td>
-<td>10</td>
+<td>0.64650</td>
+<td>0.67000</td>
+<td>0.33230</td>
+<td>11</td>
 <td>2</td>
 </tbody>
 </table>
@@ -614,7 +629,9 @@ In this porject, lots of records in the dataset are unknown and we have much mor
 <p>
 During this project, I understand what machine learning more. In order to finished this project. I did many study on the skills and knowledge on the internet, especially for the usage of scitkit-learn module. Besides, I also noticed that the structure and nature of the feature dataset do affect the result deeply. To work on create useful feature dataset with original dataset should be a big knowledge and needed much experience. Of course, with this course and the project, I did learn lots of skills and knowledge about not only machine learning but also python. I was glad that I have learn how to do basic machine learning with python and then where and how to find the resource to train myself.
 </P>
-
+<p>
+Besides, the previous reviewer did help me very much, especially for the advices he gave. I reviewed my project again. And then digged the data a little more. It is interesting to explore data more so that the model I built became more realiable. About the future work, I would like to train my model with different feature set to make the model more realible. This time, I just had a look at how the results change with changing the features. As what I expected, the feature selection and engineering data did have impact on the model training. This project made me learned lots about machine learning, which strengthen my will to take <strong>Machine Learning of Udacity</strong> as the next step of my plan.
+</p>
 ## Script
 
 <table>
@@ -631,7 +648,7 @@ During this project, I understand what machine learning more. In order to finish
 </tr>
 <tr>
 <td>poi_data.py</td>
-<td>fix non-consistent data and reform data structure</td>
+<td>fix non-consistent data, reform data structure and count the data loss</td>
 </tr>
 <tr>
 <td>poi_add_feature.py</td>
@@ -644,6 +661,10 @@ During this project, I understand what machine learning more. In order to finish
 <tr>
 <td>poi_validate.py</td>
 <td>validate the model whoes parameters are tuned by GridSearch</td>
+</tr>
+<tr>
+<td>poi_plot.py</td>
+<td>create the figures about data loss count</td>
 </tr>
 <tr>
 <td>tester.py</td>
@@ -731,5 +752,3 @@ During this project, I understand what machine learning more. In order to finish
 </tr>
 </tbody>
 </table>
-
-<img src="scripts/normalized_feature_loss_count.png" width=800px/>
