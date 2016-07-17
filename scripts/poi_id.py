@@ -29,16 +29,16 @@ email_features_list = [
     ]
 financial_features_list = [
     'bonus',
-    'deferral_payments',
+    # 'deferral_payments', removed
     'deferred_income',
-    'director_fees',
+    # 'director_fees', removed
     'exercised_stock_options',
     'expenses',
-    'loan_advances',
+    # 'loan_advances', removed
     'long_term_incentive',
     'other',
     'restricted_stock',
-    'restricted_stock_deferred',
+    # 'restricted_stock_deferred', removed
     'salary',
     'total_payments',
     'total_stock_value'

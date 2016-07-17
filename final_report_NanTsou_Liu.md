@@ -184,18 +184,20 @@ In order to realize the difference in data between POI and Non-POI, I visualized
 With actual data loss count figure, it is a little bit hard to compare the differnce in records between POI and Non-POI, because the number of records are quite different (POI: 18 records, Non-POI: 126 records). However, we can simply understand that some features like <strong>total_payments</strong>, <strong>total_stock_value</strong>, <strong>expense</strong> and <strong>other</strong> should be the important features to identify POI because there is no data loss in POI records. Surely, this one can also be observed with the talbe above.
 </p>
 
-<img src="scripts/normalized_data_loss_count.png" width=800 />
+<img src="scripts/normalized_data_loss_count.png" width=800></img>
+
 <p>
 On the other hand, with normalized data loss count figure, we can simply indicate that which feature has weak effect on the prediction. In this case, the features like <strong>deferal_payments</strong>, <strong>exercised_stock_options</strong>, <strong>restricted_stock_deferred</strong>, <strong>loan_advances</strong> and <strong>director_fees</strong> could be weak features because there are almost no data in both POI and Non-POI. This fact could be observed with the table and figreu above, but normalized figure could provide quick insigt into it.
 Besides, normalized figure also tells what the percentage the data lost in both POI and Non-POI record. It can help us to choose those which have data over 50% to do the prediction.
 </p>
 
 <p>
-As the simple conclusion in this section, we have over all <strong>146 records</strong> which has two outlier, <strong>20</strong> features and <strong>1</strong> label called <strong>POI</strong>. And there are 
+As the simple conclusion in this section, we have over all <strong>146 records</strong> which has two outlier, <strong>20</strong> features and <strong>1</strong> label called <strong>POI</strong>. And there are four features, <strong>deferal_payments</strong>, <strong>restricted_stock_deferred</strong>, <strong>loan_advances</strong> and <strong>director_fees</strong>, which loss data over 50%. 
 </p>
+
 ###Outliers
 <p>
-By observing the data and pdf file, enron61702insiderpay.pdf, the obvious outliers are <strong>TOTAL</strong> and <strong>THE TRAVEL AGENCY IN THE PARK</strong> which are simply removed by <code>pop()</code> method of dictionary in Python. Besides, the record of <strong>LOCKHART EUGENE E</strong> is empty, thus it was also removed.
+By observing the data and pdf file, <strong>enron61702insiderpay.pdf</strong>, the obvious outliers are <strong>TOTAL</strong> and <strong>THE TRAVEL AGENCY IN THE PARK</strong> which are simply removed by <code>pop()</code> method of dictionary in Python. Besides, the record of <strong>LOCKHART EUGENE E</strong> is empty, thus it was also removed.
 </p>
 <p>
 I found out that the records of <strong>BELFER ROBERT</strong> and <strong>BHATNAGAR SANJAY</strong> are not consistent with the data in pdf file by accident. Therefore, I fixed them before removing outliers and replacing NaN with 0. I did not check every records so that I am not sure whether there are others not consistent or not.
@@ -206,10 +208,22 @@ I found out that the records of <strong>BELFER ROBERT</strong> and <strong>BHATN
 >What features did you end up using in your POI identifier, and what selection process did you use to pick them? Did you have to do any scaling? Why or why not? As part of the assignment, you should attempt to engineer your own feature that does not come ready-made in the dataset -- explain what feature you tried to make, and the rationale behind it. (You do not necessarily have to use it in the final analysis, only engineer and test it.) In your feature selection step, if you used an algorithm like a decision tree, please also give the feature importances of the features that you use, and if you used an automated feature selection function like SelectKBest, please report the feature scores and reasons for your choice of parameter values.
 
 <p>
-At the beginning, I used all the original features except <strong>mail_address</strong> in the dataset. Besides, I added <strong>financial relatived features</strong> like the ratios of each payment feature or stock feature to the total amount of financial and <strong>message related feature</strong>.
+At the beginning, I used all the original features except <strong>mail_address</strong> in the dataset. However, after I had a look at the data and considered data loss with the aspect of POI and Non-POi. I decided to exclude four features which loss data over 50%. Thsu, there are 16 featrues used in this project shown as below.
+</p>
+
+#### Financial Features
+<code>'salary'</code>, <code>'bonus'</code>, <code>'expenses'</code>, <code>'other'</code>, <code>'deferred\_income'</code>, <code>'long\_term\_incentive'</code>, <code>'exercised\_stock\_options'</code>, <code>'restricted\_stock'</code>
+
+#### Email Features
+<code>'from\_messages'</code>, <code>'from\_poi\_to\_this\_person'</code>, <code>'from\_this\_person\_to\_poi'</code>, <code>'shared\_receipt\_with\_poi'</code>, <code>'to\_messages'</code>
+
+<p>Besides, I added <strong>financial relatived features</strong> like the ratios of each payment feature or stock feature to the total amount of financial and <strong>message related feature</strong>.
 </p> 
 <p>
-The reasons I added these features are that first, I assumed that POI has somehow great relationship with the financial status. I calculated the ratio of each financial features to <strong>total_financial</strong> (summation of <strong>total_payments</strong> and <strong>total_stock_value</strong>) because I thought that the person of POI might had large percentage of restricted_stock or salary of the total financial status. It also means that <strong>the composition of the financial status</strong> might be the good features for model training.
+The reasons I added these features are that first, I assumed that POI has somehow great relationship with the financial status. First, I calculated the ratio of each financial features to <strong>total_financial</strong> (summation of <strong>total_payments</strong> and <strong>total_stock_value</strong>) because I thought that the person of POI might had large percentage of restricted_stock or salary of the total financial status. It also means that <strong>the composition of the financial status</strong> might be the good features for model training. 
+</p>
+<p>
+However, after I considered more, the total amount of payments and stock values are much greater than each single payment and stock value, so that the ratios calculated by the equations above might elminate the effect of the new features to the prediction. Thus, I decided to redesign the new features. First, I <strong>separated</strong> the payments and stock values and calculated respectively. Second, I added <strong>ratio of total payments to overall financial amount</strong> and <strong>raton of total stock value</strong> to overall financial amount, where overall financail amount is the summation of total payments and total stock values.
 </p>
 <p>
 On the other hand, the messages of each person should be a strong feature to identify POI. Therefore, I culaculated the ratio of <strong>poi_relative_message</strong> (summation of <strong>from_poi_to_this_person</strong>, <strong>from_this_person_to_poi</strong> and shared <strong>receipt_with_poi</strong>) to <strong>total_messages</strong> (summation of <strong>from_message</strong> and <strong>to_message</strong>).

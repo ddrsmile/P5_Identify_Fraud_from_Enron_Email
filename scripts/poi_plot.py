@@ -114,8 +114,14 @@ def create_plot(poi_loss, non_poi_loss, total_loss, normalize=False):
     else:
         plt.ylim([0, 150])
 
-    # Adding the legend and showing the plot
+    # add the legend and showing the plot
     plt.legend(['poi_loss', 'non_poi_loss', 'total_loss'], loc='upper left')
+
+    # add threshold line
+    if normalize:
+        plt.axhline(y=1.0, xmin=min(pos) - width, xmax=max(pos) + width * 4, linestyle='--', color='black')
+    else:
+        plt.axhline(y=144, xmin=min(pos) - width, xmax=max(pos) + width * 4, linestyle='--', color='black')
 
     # save the figure
     fig.savefig(os.path.join(file_path, '{}.png'.format(title)), bbox_inches='tight')

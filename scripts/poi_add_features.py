@@ -93,9 +93,12 @@ def add_financial_ratios(df):
 def create_payments_ratio(df):
 
     # the features related to payments
-    payment_features = ['salary', 'deferral_payments', 'bonus',
-                        'expenses','loan_advances', 'other',
-                        'director_fees','deferred_income', 'long_term_incentive']
+    payment_features = ['salary', 'bonus','expenses', 'other',
+                        'deferred_income', 'long_term_incentive']
+
+    #payment_features = ['salary', 'deferral_payments', 'bonus',
+    #                    'expenses','loan_advances', 'other',
+    #                    'director_fees','deferred_income', 'long_term_incentive']
 
     for feature in payment_features:
         df['{0}_payment_ratio'.format(feature)] = df[feature] / df['total_payments']
@@ -106,8 +109,9 @@ def create_payments_ratio(df):
 def create_stock_value_ratio(df):
 
     # the features related to payments
-    stock_value_features = ['exercised_stock_options', 'restricted_stock', 'restricted_stock_deferred']
+    stock_value_features = ['exercised_stock_options', 'restricted_stock']
 
+    # stock_value_features = ['exercised_stock_options', 'restricted_stock', 'restricted_stock_deferred']
     for feature in stock_value_features:
         df['{0}_stock_ratio'.format(feature)] = df[feature] / df['total_stock_value']
 
@@ -116,17 +120,17 @@ def create_stock_value_ratio(df):
 
 def create_overall_financial_ratio(df, saperate=False):
     financial_features = ['salary',
-                          'deferral_payments',
+                          #'deferral_payments', removed
                           'bonus',
                           'expenses',
-                          'loan_advances',
+                          #'loan_advances', removed
                           'other',
-                          'director_fees',
+                          #'director_fees', removed
                           'deferred_income',
                           'long_term_incentive',
                           'exercised_stock_options',
-                          'restricted_stock',
-                          'restricted_stock_deferred']
+                          'restricted_stock']
+                          #'restricted_stock_deferred'] removed
 
     df['total_financial'] = df['total_payments'] + df['total_stock_value']
 
