@@ -17,10 +17,11 @@ By Nan-Tsou Liu @ 2016-07-11
 >Summarize for us the goal of this project and how machine learning is useful in trying to accomplish it. As part of your answer, give some background on the dataset and how it can be used to answer the project question. Were there any outliers in the data when you got it, and how did you handle those? <br/>
 [relevant rubric items: “data exploration”, “outlier investigation”]
 
-### Goal of the Project:
+
+###Goal of the Project:
+
 <p>
-In this project, the prediction model is built by using the python module called scikit-learn to identify the person of interest (POI). 
-The following skills are applied to carried out the project:
+In this project, the prediction model is built by using the python module called scikit-learn to identify the person of interest (POI). The dataset contains 146 records with 1 labele (POI), 14 financial features and 6 email feature. In the data of labels, there are 18 records have been marked as POI. The following skills are applied to carried out the project:
 <ul>
 <li>feature selection and scaling</li>
 <li>algorithm selection and tuning</li>
@@ -29,170 +30,6 @@ The following skills are applied to carried out the project:
 </ul>
 </p>
 
-### Basic Info of the DataSet
-<p>
-First of all, I would like to take a look at the original dataset to realize what data structure and characters this dataset is. The original dataset contains <strong>146</strong> records with <strong>1 labele (POI)</strong>, <strong>14 financial features</strong> and <strong>6 email features</strong>. In the data of labels, there are <strong>18</strong> records have been marked as <strong>POI</strong>.
-Furthermore, we also concern that whether there are <strong>missing data</strong> or not. According to pdf file, <strong>enron61702insiderpay.pdf</strong>, we could simply find out lots of data are lost. Thus, I counted data loss of each feature to check how many data of each feature we loss. And in order to have a insight into the difference between the records of POI and Non-Poi. I counted the loss with respect <strong>POI and Non-POI respectively</strong>. Also, I presented the overall loss count together.
-</p>
-
-### Data Loss Count of Each Feature
-
-<table>
-<thead>
-<tr>
-<td><strong>Feature</strong></td>
-<td><strong>POI</strong></td>
-<td><strong>NON POI</strong></td>
-<td><strong>TOTAL</strong></td>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>salary</td>
-<td>1</td>
-<td>49</td>
-<td>50</td>
-</tr>
-<tr>
-<td>to_messages</td>
-<td>4</td>
-<td>54</td>
-<td>58</td>
-</tr>
-<tr>
-<td>deferral_payments</td>
-<td>13</td>
-<td>93</td>
-<td>106</td>
-</tr>
-<tr>
-<td>total_payments</td>
-<td>0</td>
-<td>21</td>
-<td>21</td>
-</tr>
-<tr>
-<td>exercised_stock_options</td>
-<td>6</td>
-<td>37</td>
-<td>43</td>
-</tr>
-<tr>
-<td>bonus</td>
-<td>2</td>
-<td>61</td>
-<td>63</td>
-</tr>
-<tr>
-<td>restricted_stock</td>
-<td>1</td>
-<td>34</td>
-<td>35</td>
-</tr>
-<tr>
-<td>shared_receipt_with_poi</td>
-<td>4</td>
-<td>54</td>
-<td>58</td>
-</tr>
-<tr>
-<td>restricted_stock_deferred</td>
-<td>18</td>
-<td>109</td>
-<td>127</td>
-</tr>
-<tr>
-<td>total_stock_value</td>
-<td>0</td>
-<td>19</td>
-<td>19</td>
-</tr>
-<td>expenses</td>
-<td>0</td>
-<td>50</td>
-<td>50</td>
-</tr>
-<tr>
-<td>loan_advances</td>
-<td>17</td>
-<td>124</td>
-<td>141</td>
-</tr>
-<tr>
-<td>from_messages</td>
-<td>4</td>
-<td>54</td>
-<td>58</td>
-</tr>
-<tr>
-<td>other</td>
-<td>0</td>
-<td>53</td>
-<td>53</td>
-</tr>
-<tr>
-<td>from_this_person_to_poi</td>
-<td>4</td>
-<td>54</td>
-<td>58</td>
-</tr>
-<td>director_fees</td>
-<td>18</td>
-<td>110</td>
-<td>128</td>
-</tr>
-<tr>
-<td>deferred_income</td>
-<td>7</td>
-<td>89</td>
-<td>96</td>
-</tr>
-<tr>
-<td>long_term_incentive</td>
-<td>6</td>
-<td>73</td>
-<td>79</td>
-</tr>
-<tr>
-<td>email_address</td>
-<td>0</td>
-<td>33</td>
-<td>33</td>
-</tr>
-<tr>
-<td>from_poi_to_this_person</td>
-<td>4</td>
-<td>54</td>
-<td>58</td>
-</tr>
-</tbody>
-</table>
-
-<strong style="color: red;">Outlier and label POI are not counted</strong>
-<br/>
-<strong style="color: red;">POI: 18 records Non-POI: 126 records TOTAL: 144 records</strong>
-
-### Visualization of Data Loss
-
-<p>
-In order to realize the difference in data between POI and Non-POI, I visualized the loss count with <strong>BAR chart</strong> as below.
-</p>
-
-<img src="scripts/actual_data_loss_count.png" width=800 />
-
-<p>
-With actual data loss count figure, it is a little bit hard to compare the differnce in records between POI and Non-POI, because the number of records are quite different (POI: 18 records, Non-POI: 126 records). However, we can simply understand that some features like <strong>total_payments</strong>, <strong>total_stock_value</strong>, <strong>expense</strong> and <strong>other</strong> should be the important features to identify POI because there is no data loss in POI records. Surely, this one can also be observed with the talbe above.
-</p>
-
-<img src="scripts/normalized_data_loss_count.png" width=800 />
-<p>
-On the other hand, with normalized data loss count figure, we can simply indicate that which feature has weak effect on the prediction. In this case, the features like <strong>deferal_payments</strong>, <strong>exercised_stock_options</strong>, <strong>restricted_stock_deferred</strong>, <strong>loan_advances</strong> and <strong>director_fees</strong> could be weak features because there are almost no data in both POI and Non-POI. This fact could be observed with the table and figreu above, but normalized figure could provide quick insigt into it.
-Besides, normalized figure also tells what the percentage the data lost in both POI and Non-POI record. It can help us to choose those which have data over 50% to do the prediction.
-</p>
-
-<p>
-As the simple conclusion in this section, we have over all <strong>146 records</strong> which has two outlier, <strong>20</strong> features and <strong>1</strong> label called <strong>POI</strong>. And there are 
-</p>
 ###Outliers
 <p>
 By observing the data and pdf file, enron61702insiderpay.pdf, the obvious outliers are <strong>TOTAL</strong> and <strong>THE TRAVEL AGENCY IN THE PARK</strong> which are simply removed by <code>pop()</code> method of dictionary in Python. Besides, the record of <strong>LOCKHART EUGENE E</strong> is empty, thus it was also removed.
@@ -408,7 +245,6 @@ Validation is the process to ensure that the results produced built model with o
 
 <p>
 I found out an interesting results when I manually tuned parameters of SVC. As the table shown below, I obtained recall score which is <strong>1.0000</strong> when I set 0.05 to parameter <strong>C</strong>. At the beginning, I did not noticed that it was the result caused by over-fitting. But I noticed that it was caused by parameter C. So, I did the simple investigate on the internet. The simple description of C is that the value of the regularization constraint, which tells the SVM optimization <strong>how much you want to avoid misclassifying</strong> each training dataset. And a very small value of C will cause the optimizer to look for a larger-margin to separate hyperplane, which means that there might be many points which are hyperplane misclassifies.</p>
-
 <table>
 <thead>
 <tr>
@@ -432,6 +268,7 @@ I found out an interesting results when I manually tuned parameters of SVC. As t
 </tr>
 </tbody>
 </table>
+
 
 ### Cross-Validation
 <p>
@@ -717,5 +554,3 @@ During this project, I understand what machine learning more. In order to finish
 </tr>
 </tbody>
 </table>
-
-<img src="scripts/normalized_feature_loss_count.png" width=800px/>
