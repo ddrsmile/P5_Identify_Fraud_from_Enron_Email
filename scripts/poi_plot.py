@@ -8,7 +8,9 @@ Tools for creating the plots of original dataset to get the insight.
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+from poi_data import count_loss_record
 file_path = os.path.dirname(os.path.abspath(__file__))
+
 
 def concat_dataframe(poi_loss, non_poi_loss, total_loss, normalize=False):
 
@@ -23,9 +25,11 @@ def concat_dataframe(poi_loss, non_poi_loss, total_loss, normalize=False):
     df.reset_index(level=0, inplace=True)
     if normalize:
         df['poi_loss'] = df['poi_loss'] / 18
-        df['non_poi_loss'] = df['non_poi_loss'] / (143 - 18)
-        df['total_loss'] = df['total_loss'] / 143
-    print df
+        df['non_poi_loss'] = df['non_poi_loss'] / 126
+        df['total_loss'] = df['total_loss'] / 146
+
+    if not normalize:
+        print df
 
     return df
 
@@ -33,7 +37,7 @@ def concat_dataframe(poi_loss, non_poi_loss, total_loss, normalize=False):
 def create_plot(poi_loss, non_poi_loss, total_loss, normalize=False):
 
     # define figure file name
-    title = 'normalized_feature_loss_count' if normalize else 'actual_feature_loss_count'
+    title = 'normalized_data_loss_count' if normalize else 'actual_data_loss_count'
 
     # get contacted dataframe of feature loss information
     df = concat_dataframe(poi_loss, non_poi_loss, total_loss, normalize)
@@ -106,13 +110,41 @@ def create_plot(poi_loss, non_poi_loss, total_loss, normalize=False):
     # Setting the x-axis and y-axis limits
     plt.xlim(min(pos)-width, max(pos)+width*4)
     if normalize:
-        plt.ylim([0, 1])
+        plt.ylim([0, 1.2])
     else:
         plt.ylim([0, 150])
 
     # Adding the legend and showing the plot
     plt.legend(['poi_loss', 'non_poi_loss', 'total_loss'], loc='upper left')
-    #fig.tight_layout()
-    #plt.show()
+
+    # save the figure
     fig.savefig(os.path.join(file_path, '{}.png'.format(title)), bbox_inches='tight')
 
+if __name__ == "__main__":
+    import pickle
+
+    # import the original data
+    with open("final_project_dataset.pkl", "r") as data_file:
+        data_dict = pickle.load(data_file)
+
+    # transform dict to data frame
+    df = pd.DataFrame.from_dict(data_dict, orient='index')
+
+    # remove the clear outlier
+    df = df.drop(['TOTAL', 'THE TRAVEL AGENCY IN THE PARK'])
+
+    # count record loss of each feature
+    # count record loss of poi only
+    poi_loss_count = count_loss_record(df, poi_mode=True)
+
+    # count record loss of non-poi only
+    non_poi_loss_count = count_loss_record(df, poi_mode=False)
+
+    # get total record loss by combining poi loss count and non-poi loss count
+    total_loss_count = poi_loss_count.add(non_poi_loss_count)
+
+    # create plot with actual data
+    create_plot(poi_loss_count, non_poi_loss_count, total_loss_count, normalize=False)
+
+    # create plot with normalized data
+    create_plot(poi_loss_count, non_poi_loss_count, total_loss_count, normalize=True)

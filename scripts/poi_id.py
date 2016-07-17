@@ -5,13 +5,15 @@ import pickle
 sys.path.append("../tools/")
 
 from sklearn.grid_search import GridSearchCV
+from sklearn.cross_validation import StratifiedShuffleSplit
 from poi_pipeline import *
 from poi_validate import *
 from poi_data import *
 from poi_add_features import *
-from poi_plot import *
 from tester import dump_classifier_and_data, test_classifier
 from tools.feature_format import targetFeatureSplit, featureFormat
+
+
 
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
@@ -54,16 +56,9 @@ data_dict = fix_records(data_dict)
 # convert dict to dataframe
 df = pd.DataFrame.from_dict(data_dict, orient='index')
 
-# print basic info of the dataset
-basic_info(df)
+# convert 'NaN' to numpy.nan
+df.replace(to_replace='NaN', value=np.nan, inplace=True)
 
-# collect the lost record info.
-poi_loss_count = count_loss_record(df, True)
-non_poi_loss_count = count_loss_record(df, False)
-total_loss_count = poi_loss_count.add(non_poi_loss_count)
-create_plot(poi_loss_count, non_poi_loss_count, total_loss_count, True)
-
-sys.exit(0)
 ### Task 2: Remove outliers
 # remove the clear outlier
 df = df.drop(['TOTAL', 'THE TRAVEL AGENCY IN THE PARK'])
@@ -73,7 +68,6 @@ df = df.drop('LOCKHART EUGENE E')
 
 ### Task 3: Create new feature(s)
 # add new feature dataset and get the list of added feature
-#data_dict, new_features = add_features(data_dict)
 df = add_features(df)
 
 # cleaning data, replace 'NaN' with 0

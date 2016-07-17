@@ -5,7 +5,9 @@ created_at: 2016-07-10
 Api for cleaning the dataset to be used in creating fraud person-of-interest (POI) prediction model.
 """
 
+import pandas as pd
 import numpy as np
+
 
 def basic_info(df):
     n_record, n_feature = df.shape
